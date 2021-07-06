@@ -3,10 +3,10 @@ package com.communitycode.amps.main;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 
 import com.communitycode.amps.main.settings.SettingsActivity;
 
@@ -58,7 +59,8 @@ public class MainActivity extends AppCompatActivity implements BatteryInfoInterf
 
         // update throbber
         ProgressBar throbber = findViewById(R.id.indeterminateBar);
-        throbber.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        throbber.getIndeterminateDrawable().setColorFilter(
+                new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
     }
 
     public void resetCurrentHistory(View view) {
