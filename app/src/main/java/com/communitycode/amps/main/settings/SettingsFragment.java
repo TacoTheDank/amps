@@ -1,15 +1,13 @@
 package com.communitycode.amps.main.settings;
 
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
+import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.communitycode.amps.main.R;
 
-public class SettingsFragment extends PreferenceFragment {
+public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    public void onCreatePreferences(final Bundle bundle, final String s) {
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.settings);
     }

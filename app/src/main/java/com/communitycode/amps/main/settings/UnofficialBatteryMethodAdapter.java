@@ -1,6 +1,7 @@
 package com.communitycode.amps.main.settings;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ public class UnofficialBatteryMethodAdapter extends RecyclerView.Adapter<Unoffic
     }
 
     // Create new views (invoked by the layout manager)
+    @NonNull
     @Override
     public UnofficialBatteryMethodAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
