@@ -12,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -44,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements BatteryInfoInterf
         final String ACCENT = getResources().getString(R.string.accent_tag);
 
         // update text views
-        ArrayList<View> views = flattenViewGroup((ViewGroup) findViewById(R.id.root_main_activity));
+        ArrayList<View> views = flattenViewGroup(findViewById(R.id.root_main_activity));
         for (int i = 0; i < views.size(); i++) {
             View view = views.get(i);
             if (view instanceof TextView) {
@@ -218,10 +217,10 @@ public class MainActivity extends AppCompatActivity implements BatteryInfoInterf
                 break;
         }
 
-        if (statusLbl != -1) {
-            findAndSetText(R.id.charging_status_value, statusLbl);
-        } else {
+        if (statusLbl == -1) {
             findAndSetText(R.id.charging_status_value, R.string.blank_value);
+        } else {
+            findAndSetText(R.id.charging_status_value, statusLbl);
         }
     }
 

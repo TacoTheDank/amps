@@ -24,8 +24,8 @@ import java.util.List;
 
 public class UnofficialBatteryApiPreference extends DialogPreference {
 
-    private ArrayList<UnofficialBatteryMethodAdapter.MethodInfo> mEntries;
-    private ArrayList<String> mEntryValues;
+    private final ArrayList<UnofficialBatteryMethodAdapter.MethodInfo> mEntries;
+    private final ArrayList<String> mEntryValues;
     private String mValue;
     private String mSummary;
     private int mClickedDialogEntryIndex;
@@ -42,11 +42,11 @@ public class UnofficialBatteryApiPreference extends DialogPreference {
                 new UnofficialBatteryMethodAdapter.MethodInfo(context.getString(R.string.xdefault),
                         official.read());
         mEntries.add(defaultMethod);
-        mEntryValues.add(BatteryMethodPickler.toJson(official));
+        mEntryValues.add(BatteryMethodPicker.toJson(official));
 
         for (UnofficialBatteryMethod method : distinct(filterApplicable(UnofficialBatteryApi.methods))) {
             mEntries.add(new UnofficialBatteryMethodAdapter.MethodInfo(method.filePath, method.read()));
-            mEntryValues.add(BatteryMethodPickler.toJson(method));
+            mEntryValues.add(BatteryMethodPicker.toJson(method));
         }
 
         setPositiveButtonText(null);
@@ -95,9 +95,8 @@ public class UnofficialBatteryApiPreference extends DialogPreference {
         final UnofficialBatteryMethodAdapter.MethodInfo entry = getEntry();
         if (mSummary == null) {
             return super.getSummary();
-        } else {
-            return String.format(mSummary, entry == null ? "" : entry.name);
         }
+        return String.format(mSummary, entry == null ? "" : entry.name);
     }
 
     /**
@@ -190,27 +189,25 @@ public class UnofficialBatteryApiPreference extends DialogPreference {
 
         Context context = builder.getContext();
         RecyclerView mRecyclerView = new RecyclerView(context);
-        RecyclerView.LayoutManager mLayoutManager;
 
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(context);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
         mClickedDialogEntryIndex = getValueIndex();
         final UnofficialBatteryMethodAdapter mAdapter = new UnofficialBatteryMethodAdapter(mEntries, mClickedDialogEntryIndex);
-        mAdapter.setOnClickListener(new UnofficialBatteryMethodAdapter.OnClickHandler() {
-            public void onClick(int position) {
-                UnofficialBatteryApiPreference that = UnofficialBatteryApiPreference.this;
+        mAdapter.setOnClickListener(position -> {
+            UnofficialBatteryApiPreference that = UnofficialBatteryApiPreference.this;
 
-                mAdapter.setCheckedPosition(position);
-                that.mClickedDialogEntryIndex = that.mClickedDialogEntryIndex == position ? -1 : position;
+            mAdapter.setCheckedPosition(position);
+            that.mClickedDialogEntryIndex = that.mClickedDialogEntryIndex == position ? -1 : position;
 
-                Dialog dialog = that.getDialog();
-                that.onClick(dialog, DialogInterface.BUTTON_POSITIVE);
-                dialog.dismiss();
-            }
+            Dialog dialog = that.getDialog();
+            that.onClick(dialog, DialogInterface.BUTTON_POSITIVE);
+            dialog.dismiss();
         });
+
         mRecyclerView.setAdapter(mAdapter);
         builder.setView(mRecyclerView);
 
@@ -229,9 +226,8 @@ public class UnofficialBatteryApiPreference extends DialogPreference {
         }
         // Same item was clicked. Deselect item
         if (positiveResult && mClickedDialogEntryIndex == -1) {
-            String value = null;
-            if (callChangeListener(value)) {
-                setValue(value);
+            if (callChangeListener(null)) {
+                setValue(null);
             }
         }
     }
@@ -261,7 +257,7 @@ public class UnofficialBatteryApiPreference extends DialogPreference {
 
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
-        if (state == null || !state.getClass().equals(SavedState.class)) {
+        if (state == null || state.getClass() != SavedState.class) {
             // Didn't save state for us in onSaveInstanceState
             super.onRestoreInstanceState(state);
             return;

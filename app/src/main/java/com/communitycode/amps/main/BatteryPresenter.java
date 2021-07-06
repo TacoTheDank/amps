@@ -46,13 +46,13 @@ public class BatteryPresenter {
         mBatteryInfoInterface.setChargingStatus(status);
 
         String technology = intent.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY);
-        isError = technology == null || "".equals(technology);
+        isError = technology == null || technology.isEmpty();
         mBatteryInfoInterface.setBatteryTechnology(isError ? null : technology);
 
         double temperature = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0) / 10f;
         mBatteryInfoInterface.setTemperature(temperature > 0 ? temperature : null);
 
-        double voltage = ((double) intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 0)) / 1000;
+        double voltage = (double) intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 0) / 1000;
         mBatteryInfoInterface.setVoltage(voltage > 0 ? voltage : null);
     }
 

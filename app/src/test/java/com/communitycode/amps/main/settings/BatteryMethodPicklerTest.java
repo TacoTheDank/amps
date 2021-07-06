@@ -13,16 +13,16 @@ public class BatteryMethodPicklerTest {
     @Test
     public void official() throws Exception {
         OfficialBatteryMethod officialBatteryMethod = new OfficialBatteryMethod(null);
-        String json = BatteryMethodPickler.toJson(officialBatteryMethod);
-        BatteryMethodInterface method = BatteryMethodPickler.fromJson(json, null);
-        assertTrue(OfficialBatteryMethod.class.isInstance(method));
+        String json = BatteryMethodPicker.toJson(officialBatteryMethod);
+        BatteryMethodInterface method = BatteryMethodPicker.fromJson(json, null);
+        assertTrue(method instanceof OfficialBatteryMethod);
     }
 
     @Test
     public void unofficial_null() throws Exception {
         UnofficialBatteryMethod unofficialBatteryMethod = new UnofficialBatteryMethod(1, "/sys/class/power_supply/battery/current_max", 1.0F, null, null, new String[]{});
-        String json = BatteryMethodPickler.toJson(unofficialBatteryMethod);
-        UnofficialBatteryMethod method = (UnofficialBatteryMethod) BatteryMethodPickler.fromJson(json, null);
+        String json = BatteryMethodPicker.toJson(unofficialBatteryMethod);
+        UnofficialBatteryMethod method = (UnofficialBatteryMethod) BatteryMethodPicker.fromJson(json, null);
         assertEquals(method.chargeField, unofficialBatteryMethod.chargeField);
         assertEquals(method.dischargeField, unofficialBatteryMethod.dischargeField);
         assertEquals(method.filePath, unofficialBatteryMethod.filePath);
@@ -33,8 +33,8 @@ public class BatteryMethodPicklerTest {
     @Test
     public void unofficial_full() throws Exception {
         UnofficialBatteryMethod unofficialBatteryMethod = new UnofficialBatteryMethod(1, "/sys/class/power_supply/battery/current_max", 1.0F, "asdf", "fdsa", new String[]{});
-        String json = BatteryMethodPickler.toJson(unofficialBatteryMethod);
-        UnofficialBatteryMethod method = (UnofficialBatteryMethod) BatteryMethodPickler.fromJson(json, null);
+        String json = BatteryMethodPicker.toJson(unofficialBatteryMethod);
+        UnofficialBatteryMethod method = (UnofficialBatteryMethod) BatteryMethodPicker.fromJson(json, null);
         assertEquals(method.chargeField, unofficialBatteryMethod.chargeField);
         assertEquals(method.dischargeField, unofficialBatteryMethod.dischargeField);
         assertEquals(method.filePath, unofficialBatteryMethod.filePath);

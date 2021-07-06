@@ -12,7 +12,7 @@ public class OfficialBatteryMethod implements BatteryMethodInterface {
     }
 
     public Integer read() {
-        if (Build.VERSION.SDK_INT < 21) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             return null;
         }
 

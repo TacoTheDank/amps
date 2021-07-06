@@ -8,7 +8,7 @@ import android.preference.PreferenceManager;
 import com.communitycode.amps.main.battery.BatteryMethodInterface;
 import com.communitycode.amps.main.battery.OfficialBatteryMethod;
 import com.communitycode.amps.main.battery.UnofficialBatteryApi;
-import com.communitycode.amps.main.settings.BatteryMethodPickler;
+import com.communitycode.amps.main.settings.BatteryMethodPicker;
 
 import java.util.ArrayList;
 
@@ -18,9 +18,9 @@ public class CurrentTracker {
     final private Handler handler = new Handler();
     final private Context mCtx;
     final private BatteryInfoInterface mBatteryInfoInterface;
+    private final Runnable sendData;
     // current in milliamps
     protected ArrayList<Integer> currentHistory = new ArrayList<>();
-    private Runnable sendData;
 
     public CurrentTracker(Context ctx, BatteryInfoInterface batteryInfoInterface) {
         mCtx = ctx;
@@ -47,13 +47,13 @@ public class CurrentTracker {
     }
 
     private void updateAmps() {
-        Integer current = null;
+        Integer current;
         boolean showAmpInfo = true;
 
         // Get current by preference
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mCtx);
         String json = sharedPref.getString("unofficial_measurement", null);
-        BatteryMethodInterface method = BatteryMethodPickler.fromJson(json, mCtx);
+        BatteryMethodInterface method = BatteryMethodPicker.fromJson(json, mCtx);
         if (method != null) {
             current = method.read();
         } else {
@@ -95,8 +95,8 @@ public class CurrentTracker {
             int min = currentHistory.get(0);
             for (int i = 0; i < currentHistory.size(); i++) {
                 int val = currentHistory.get(i);
-                max = val > max ? val : max;
-                min = val < min ? val : min;
+                max = Math.max(val, max);
+                min = Math.min(val, min);
             }
             int last = currentHistory.get(currentHistory.size() - 1);
             mBatteryInfoInterface.setMaxAmps(max);

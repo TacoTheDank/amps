@@ -9,7 +9,7 @@ import com.communitycode.amps.main.battery.UnofficialBatteryMethod;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-public class BatteryMethodPickler {
+public class BatteryMethodPicker {
     public static String DISCHARGEFIELD = "DISCHARGEFIELD";
     public static String CHARGEFIELD = "CHARGEFIELD";
     public static String FILEPATH = "FILEPATH";
@@ -18,7 +18,6 @@ public class BatteryMethodPickler {
     public static String TYPE = "TYPE";
     public static String OFFICIALBATTERYMETHOD = "OFFICIALBATTERYMETHOD";
     public static String UNOFFICIALBATTERYMETHOD = "UNOFFICIALBATTERYMETHOD";
-    private static Class<BatteryMethodInterface>[] x = new Class[]{OfficialBatteryMethod.class, UnofficialBatteryMethod.class};
 
     public static BatteryMethodInterface fromJson(String json, Context mCtx) {
         if (json == null) {
@@ -31,7 +30,8 @@ public class BatteryMethodPickler {
             String type = jsonObject.get(TYPE).getAsString();
             if (type.equals(OFFICIALBATTERYMETHOD)) {
                 return new OfficialBatteryMethod(mCtx);
-            } else if (type.equals(UNOFFICIALBATTERYMETHOD)) {
+            }
+            if (type.equals(UNOFFICIALBATTERYMETHOD)) {
                 return new UnofficialBatteryMethod(
                         jsonObject.get(READER).getAsInt(),
                         jsonObject.get(FILEPATH).getAsString(),
@@ -39,9 +39,8 @@ public class BatteryMethodPickler {
                         jsonObject.has(DISCHARGEFIELD) ? jsonObject.get(DISCHARGEFIELD).getAsString() : null,
                         jsonObject.has(CHARGEFIELD) ? jsonObject.get(CHARGEFIELD).getAsString() : null,
                         new String[]{});
-            } else {
-                Log.d("Amps", "Unknown method. Json=" + json);
             }
+            Log.d("Amps", "Unknown method. Json=" + json);
         } catch (Exception e) {
             Log.d("Amps", "Failed to parse preference. Json=" + json + " error=" + e.getMessage());
         }
@@ -49,12 +48,13 @@ public class BatteryMethodPickler {
     }
 
     public static String toJson(BatteryMethodInterface obj) {
-        if (OfficialBatteryMethod.class.isInstance(obj)) {
+        if (obj instanceof OfficialBatteryMethod) {
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty(TYPE, OFFICIALBATTERYMETHOD);
             Gson gson = new Gson();
             return gson.toJson(jsonObject);
-        } else if (UnofficialBatteryMethod.class.isInstance(obj)) {
+        }
+        if (obj instanceof UnofficialBatteryMethod) {
             UnofficialBatteryMethod method = (UnofficialBatteryMethod) obj;
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty(TYPE, UNOFFICIALBATTERYMETHOD);

@@ -13,8 +13,8 @@ import com.communitycode.amps.main.R;
 import java.util.ArrayList;
 
 public class UnofficialBatteryMethodAdapter extends RecyclerView.Adapter<UnofficialBatteryMethodAdapter.ViewHolder> {
+    private final ArrayList<MethodInfo> mDataset;
     private int mCheckedPosition;
-    private ArrayList<MethodInfo> mDataset;
     private OnClickHandler mOnClickListener;
 
     // Provide a suitable constructor (depends on the kind of dataset)
@@ -46,11 +46,9 @@ public class UnofficialBatteryMethodAdapter extends RecyclerView.Adapter<Unoffic
         Context context = holder.mView.getContext();
         MethodInfo method = mDataset.get(position);
 
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            public void onClick(View v) {
-                if (mOnClickListener != null) {
-                    mOnClickListener.onClick(holder.getAdapterPosition());
-                }
+        View.OnClickListener onClickListener = v -> {
+            if (mOnClickListener != null) {
+                mOnClickListener.onClick(holder.getAdapterPosition());
             }
         };
 
@@ -87,7 +85,7 @@ public class UnofficialBatteryMethodAdapter extends RecyclerView.Adapter<Unoffic
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    protected static class ViewHolder extends RecyclerView.ViewHolder {
         private final CheckBox mCheckBox;
         // each data item is just a string in this case
         public View mView;

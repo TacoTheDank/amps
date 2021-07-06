@@ -62,16 +62,15 @@ public class UnofficialBatteryMethod implements BatteryMethodInterface {
 
         if (val == null) {
             return null;
-        } else {
-            return Math.round(val * scale);
         }
+        return Math.round(val * scale);
     }
 
     public boolean equalsIgnoreTransient(UnofficialBatteryMethod b) {
         return filePath.equals(b.filePath)
                 && reader == b.reader
                 && scale == b.scale
-                && (chargeField == b.chargeField || (chargeField != null && chargeField.equals(b.chargeField)))
-                && (dischargeField == b.dischargeField || (dischargeField != null && dischargeField.equals(b.dischargeField)));
+                && (chargeField == b.chargeField || chargeField != null && chargeField.equals(b.chargeField))
+                && (dischargeField == b.dischargeField || dischargeField != null && dischargeField.equals(b.dischargeField));
     }
 }
