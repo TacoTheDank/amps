@@ -10,6 +10,7 @@ public class OfficialBatteryMethod implements BatteryMethodInterface {
     public OfficialBatteryMethod(Context context) {
         mCtx = context;
     }
+
     public Integer read() {
         if (Build.VERSION.SDK_INT < 21) {
             return null;

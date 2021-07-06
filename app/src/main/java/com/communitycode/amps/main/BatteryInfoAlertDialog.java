@@ -18,7 +18,7 @@ public class BatteryInfoAlertDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(R.string.battery_info_alert_message)
                 .setPositiveButton(android.R.string.ok, null)
-                .setNegativeButton(R.string.go_to_battery_info_settings, new DialogInterface.OnClickListener(){
+                .setNegativeButton(R.string.go_to_battery_info_settings, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getContext(), SettingsActivity.class);

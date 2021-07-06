@@ -19,15 +19,13 @@
  *  Modified 23 March 2018
  */
 
-
 package com.communitycode.amps.main.battery.reader;
 
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-
-import android.util.Log;
 
 public class BatteryAttrTextReader {
 
@@ -51,29 +49,24 @@ public class BatteryAttrTextReader {
             final String dischargeFieldHead = dischargeField + ": ";
 
 
-            while (line != null)
-            {
-                if (line.contains(chargeField))
-                {
+            while (line != null) {
+                if (line.contains(chargeField)) {
                     text = line.substring(line.indexOf(chargeFieldHead) + chargeFieldHead.length());
                     try {
                         value = Integer.parseInt(text);
                         if (value != 0)
                             break;
-                    }
-                    catch (NumberFormatException nfe) {
+                    } catch (NumberFormatException nfe) {
                         Log.e("Amps", nfe.getMessage(), nfe);
                     }
                 }
 
                 //  "batt_discharge_current:"
-                if (line.contains(dischargeField))
-                {
+                if (line.contains(dischargeField)) {
                     text = line.substring(line.indexOf(dischargeFieldHead) + dischargeFieldHead.length());
                     try {
-                        value = (-1)*Math.abs(Integer.parseInt(text));
-                    }
-                    catch (NumberFormatException nfe) {
+                        value = (-1) * Math.abs(Integer.parseInt(text));
+                    } catch (NumberFormatException nfe) {
                         Log.e("Amps", nfe.getMessage(), nfe);
                     }
                     break;
@@ -81,12 +74,9 @@ public class BatteryAttrTextReader {
 
                 line = br.readLine();
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Log.e("Amps", ex.getMessage(), ex);
-        }
-        finally
-        {
+        } finally {
             try {
                 if (fr != null) {
                     fr.close();
@@ -94,14 +84,11 @@ public class BatteryAttrTextReader {
                 if (br != null) {
                     br.close();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Log.e("Amps", ex.getMessage(), ex);
             }
         }
 
         return value;
     }
-
 }

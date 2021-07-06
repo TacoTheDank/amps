@@ -23,6 +23,6 @@ public class Utils {
     }
 
     public static double convertCelsiusToFahrenheit(double value) {
-        return value*1.8 + 32;
+        return value * 1.8 + 32;
     }
 }

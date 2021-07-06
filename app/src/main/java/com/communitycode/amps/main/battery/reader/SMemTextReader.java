@@ -17,14 +17,14 @@
  *  along with CurrentWidget.  If not, see <http://www.gnu.org/licenses/>.
  *
  *  Modified 23 March 2018
-*/
+ */
 
 package com.communitycode.amps.main.battery.reader;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
-
-import android.util.Log;
 
 public class SMemTextReader {
 
@@ -53,9 +53,7 @@ public class SMemTextReader {
             }
         } catch (Exception ex) {
             Log.e("Amps", ex.getMessage(), ex);
-        }
-        finally
-        {
+        } finally {
             try {
                 if (fr != null) {
                     fr.close();
@@ -63,13 +61,10 @@ public class SMemTextReader {
                 if (br != null) {
                     br.close();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Log.e("Amps", ex.getMessage(), ex);
             }
         }
-
 
         Integer value = null;
 
@@ -85,5 +80,4 @@ public class SMemTextReader {
 
         return value;
     }
-
 }

@@ -1,6 +1,5 @@
 package com.communitycode.amps.main.settings;
 
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -40,8 +39,8 @@ public class UnofficialBatteryApiPreference extends DialogPreference {
 
         BatteryMethodInterface official = new OfficialBatteryMethod(context);
         UnofficialBatteryMethodAdapter.MethodInfo defaultMethod =
-        new UnofficialBatteryMethodAdapter.MethodInfo(context.getString(R.string.xdefault),
-            official.read());
+                new UnofficialBatteryMethodAdapter.MethodInfo(context.getString(R.string.xdefault),
+                        official.read());
         mEntries.add(defaultMethod);
         mEntryValues.add(BatteryMethodPickler.toJson(official));
 
@@ -49,7 +48,6 @@ public class UnofficialBatteryApiPreference extends DialogPreference {
             mEntries.add(new UnofficialBatteryMethodAdapter.MethodInfo(method.filePath, method.read()));
             mEntryValues.add(BatteryMethodPickler.toJson(method));
         }
-
 
         setPositiveButtonText(null);
         setNegativeButtonText(android.R.string.cancel);
@@ -69,7 +67,7 @@ public class UnofficialBatteryApiPreference extends DialogPreference {
 
     public static List<UnofficialBatteryMethod> distinct(List<UnofficialBatteryMethod> methods) {
         ArrayList<UnofficialBatteryMethod> uniqueMethods = new ArrayList<>();
-        for(UnofficialBatteryMethod a : methods) {
+        for (UnofficialBatteryMethod a : methods) {
             boolean found = false;
             for (UnofficialBatteryMethod b : uniqueMethods) {
                 if (a.equalsIgnoreTransient(b)) {
@@ -82,25 +80,6 @@ public class UnofficialBatteryApiPreference extends DialogPreference {
             }
         }
         return uniqueMethods;
-    }
-
-    /**
-     * Sets the value of the key. This should be one of the entries in
-     * entry values.
-     *
-     * @param value The value to set for the key.
-     */
-    public void setValue(String value) {
-        // Always persist/notify the first time.
-        final boolean changed = !TextUtils.equals(mValue, value);
-        if (changed || !mValueSet) {
-            mValue = value;
-            mValueSet = true;
-            persistString(value);
-            if (changed) {
-                notifyChanged();
-            }
-        }
     }
 
     /**
@@ -148,6 +127,25 @@ public class UnofficialBatteryApiPreference extends DialogPreference {
      */
     public String getValue() {
         return mValue;
+    }
+
+    /**
+     * Sets the value of the key. This should be one of the entries in
+     * entry values.
+     *
+     * @param value The value to set for the key.
+     */
+    public void setValue(String value) {
+        // Always persist/notify the first time.
+        final boolean changed = !TextUtils.equals(mValue, value);
+        if (changed || !mValueSet) {
+            mValue = value;
+            mValueSet = true;
+            persistString(value);
+            if (changed) {
+                notifyChanged();
+            }
+        }
     }
 
     /**
@@ -219,7 +217,6 @@ public class UnofficialBatteryApiPreference extends DialogPreference {
         builder.setPositiveButton(null, null);
     }
 
-
     @Override
     protected void onDialogClosed(boolean positiveResult) {
         super.onDialogClosed(positiveResult);
@@ -276,23 +273,6 @@ public class UnofficialBatteryApiPreference extends DialogPreference {
     }
 
     private static class SavedState extends BaseSavedState {
-        String value;
-
-        public SavedState(Parcel source) {
-            super(source);
-            value = source.readString();
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            super.writeToParcel(dest, flags);
-            dest.writeString(value);
-        }
-
-        public SavedState(Parcelable superState) {
-            super(superState);
-        }
-
         public static final Parcelable.Creator<SavedState> CREATOR =
                 new Parcelable.Creator<SavedState>() {
                     public SavedState createFromParcel(Parcel in) {
@@ -303,5 +283,21 @@ public class UnofficialBatteryApiPreference extends DialogPreference {
                         return new SavedState[size];
                     }
                 };
+        String value;
+
+        public SavedState(Parcel source) {
+            super(source);
+            value = source.readString();
+        }
+
+        public SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            super.writeToParcel(dest, flags);
+            dest.writeString(value);
+        }
     }
 }

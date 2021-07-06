@@ -1,7 +1,5 @@
 package com.communitycode.amps.main.settings;
 
-import com.communitycode.amps.main.BatteryInfoInterface;
-import com.communitycode.amps.main.CurrentTracker;
 import com.communitycode.amps.main.battery.BatteryMethodInterface;
 import com.communitycode.amps.main.battery.OfficialBatteryMethod;
 import com.communitycode.amps.main.battery.UnofficialBatteryMethod;
@@ -10,7 +8,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 
 public class BatteryMethodPicklerTest {
     @Test

@@ -1,26 +1,11 @@
 package com.communitycode.amps.main.battery;
 
-
 import android.os.Build;
-
 
 import java.util.Locale;
 
 public class UnofficialBatteryApi {
     public static final String BUILD_MODEL = Build.MODEL.toLowerCase(Locale.ENGLISH);
-
-    public static Integer getCurrent() {
-        for (UnofficialBatteryMethod unofficialBatteryMethod : methods) {
-            if (unofficialBatteryMethod.isApplicable(BUILD_MODEL)) {
-                Integer val = unofficialBatteryMethod.read();
-                if (val != null) {
-                    return val;
-                }
-            }
-        }
-        return null;
-    }
-
     public static final UnofficialBatteryMethod[] methods = {
             new UnofficialBatteryMethod(1, "/sys/class/power_supply/battery/current_max", 1.0F, null, null, new String[]{"gt-i9300", "gt-i9300T", "gt-i9305", "gt-i9305N", "gt-i9305T", "shv-e210k", "shv-e210l", "shv-e210s", "sgh-t999", "sgh-t999l", "sgh-t999v", "sgh-i747", "sgh-i747m", "sgh-n064", "sc-06d", "sgh-n035", "sc-03e", "SCH-j021", "scl21", "sch-r530", "sch-i535", "sch-S960l", "gt-i9308", "sch-i939", "sch-s968c"}),
             new UnofficialBatteryMethod(1, "/sys/class/power_supply/battery/current_now", 1.0F, null, null, new String[]{"nexus 7", "one", "lg-d851"}),
@@ -71,5 +56,15 @@ public class UnofficialBatteryApi {
             new UnofficialBatteryMethod(1, "/sys/class/power_supply/battery/current_max", 1.0F, null, null, new String[0])
     };
 
-
+    public static Integer getCurrent() {
+        for (UnofficialBatteryMethod unofficialBatteryMethod : methods) {
+            if (unofficialBatteryMethod.isApplicable(BUILD_MODEL)) {
+                Integer val = unofficialBatteryMethod.read();
+                if (val != null) {
+                    return val;
+                }
+            }
+        }
+        return null;
+    }
 }

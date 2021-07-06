@@ -17,25 +17,6 @@ public class UnofficialBatteryMethodAdapter extends RecyclerView.Adapter<Unoffic
     private ArrayList<MethodInfo> mDataset;
     private OnClickHandler mOnClickListener;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final CheckBox mCheckBox;
-        // each data item is just a string in this case
-        public View mView;
-        public TextView mFilePath;
-        public TextView mCurrentValue;
-        
-        public ViewHolder(View v) {
-            super(v);
-            mFilePath = v.findViewById(R.id.filePath);
-            mCheckBox = v.findViewById(R.id.checkbox);
-            mCurrentValue = v.findViewById(R.id.currentValue);
-            mView = v;
-        }
-    }
-
     // Provide a suitable constructor (depends on the kind of dataset)
     public UnofficialBatteryMethodAdapter(ArrayList<MethodInfo> myDataset, int checkedPosition) {
         mDataset = myDataset;
@@ -44,8 +25,7 @@ public class UnofficialBatteryMethodAdapter extends RecyclerView.Adapter<Unoffic
 
     // Create new views (invoked by the layout manager)
     @Override
-    public UnofficialBatteryMethodAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                                        int viewType) {
+    public UnofficialBatteryMethodAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         Context context = parent.getContext();
         LayoutInflater li = LayoutInflater.from(context);
@@ -75,9 +55,7 @@ public class UnofficialBatteryMethodAdapter extends RecyclerView.Adapter<Unoffic
         };
 
         holder.mView.setOnClickListener(onClickListener);
-
         holder.mFilePath.setText(method.name);
-
 
         Integer val = method.value;
         if (val == null) {
@@ -104,6 +82,25 @@ public class UnofficialBatteryMethodAdapter extends RecyclerView.Adapter<Unoffic
 
     public interface OnClickHandler {
         void onClick(int position);
+    }
+
+    // Provide a reference to the views for each data item
+    // Complex data items may need more than one view per item, and
+    // you provide access to all the views for a data item in a view holder
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final CheckBox mCheckBox;
+        // each data item is just a string in this case
+        public View mView;
+        public TextView mFilePath;
+        public TextView mCurrentValue;
+
+        public ViewHolder(View v) {
+            super(v);
+            mFilePath = v.findViewById(R.id.filePath);
+            mCheckBox = v.findViewById(R.id.checkbox);
+            mCurrentValue = v.findViewById(R.id.currentValue);
+            mView = v;
+        }
     }
 
     public static class MethodInfo {

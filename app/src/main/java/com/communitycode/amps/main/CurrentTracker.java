@@ -1,6 +1,5 @@
 package com.communitycode.amps.main;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -16,28 +15,23 @@ import java.util.ArrayList;
 public class CurrentTracker {
     protected static final int MAX_HISTORY = 1000;
     private static final int UPDATE_DELAY = 500;
-
-    // current in milliamps
-    protected ArrayList<Integer> currentHistory = new ArrayList<>();
-
-    private Runnable sendData;
     final private Handler handler = new Handler();
     final private Context mCtx;
     final private BatteryInfoInterface mBatteryInfoInterface;
+    // current in milliamps
+    protected ArrayList<Integer> currentHistory = new ArrayList<>();
+    private Runnable sendData;
 
-
-    public CurrentTracker (Context ctx, BatteryInfoInterface batteryInfoInterface) {
+    public CurrentTracker(Context ctx, BatteryInfoInterface batteryInfoInterface) {
         mCtx = ctx;
         mBatteryInfoInterface = batteryInfoInterface;
-        sendData = new Runnable(){
-            public void run(){
+        sendData = new Runnable() {
+            public void run() {
                 try {
                     updateAmps();
 
-
                     handler.postDelayed(this, UPDATE_DELAY);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -62,15 +56,13 @@ public class CurrentTracker {
         BatteryMethodInterface method = BatteryMethodPickler.fromJson(json, mCtx);
         if (method != null) {
             current = method.read();
-        }
-        else {
+        } else {
             // Get current by best guess
             current = new OfficialBatteryMethod(mCtx).read();
 
             if (current == null || current == 0) {
                 current = UnofficialBatteryApi.getCurrent();
-            }
-            else {
+            } else {
                 // Official method worked and preference is not set. No need to clutter the UI.
                 showAmpInfo = false;
             }
@@ -110,12 +102,10 @@ public class CurrentTracker {
             mBatteryInfoInterface.setMaxAmps(max);
             mBatteryInfoInterface.setMinAmps(min);
             mBatteryInfoInterface.setCurrentAmps(last);
-        }
-        else {
+        } else {
             mBatteryInfoInterface.setMaxAmps(null);
             mBatteryInfoInterface.setMinAmps(null);
             mBatteryInfoInterface.setCurrentAmps(null);
         }
     }
-
 }

@@ -12,13 +12,13 @@ public class CurrentTrackerUnitTest {
         BatteryInfoInterface mockBatteryInfo = mock(BatteryInfoInterface.class);
         CurrentTracker currentTracker = new CurrentTracker(null, mockBatteryInfo);
 
-        for (int i = 0; i < CurrentTracker.MAX_HISTORY*2; i++) {
+        for (int i = 0; i < CurrentTracker.MAX_HISTORY * 2; i++) {
             currentTracker.addHistory(i);
         }
 
         assertEquals(CurrentTracker.MAX_HISTORY, currentTracker.currentHistory.size());
 
-        assertEquals( "Check first in first out",
+        assertEquals("Check first in first out",
                 CurrentTracker.MAX_HISTORY, currentTracker.currentHistory.get(0).intValue());
     }
 

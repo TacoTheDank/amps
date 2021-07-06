@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
-import android.os.Build;
 import android.util.Log;
 
 public class BatteryPresenter {
@@ -19,11 +18,17 @@ public class BatteryPresenter {
             try {
                 // Avoid crashing the app
                 updateBatteryData(intent);
-            } catch(Exception e) {
+            } catch (Exception e) {
                 Log.e("error", e.getMessage());
             }
         }
     };
+
+    public BatteryPresenter(Context ctx, BatteryInfoInterface batteryInfoInterface) {
+        mBatteryInfoInterface = batteryInfoInterface;
+        mCtx = ctx;
+        mCurrentTracker = new CurrentTracker(ctx, batteryInfoInterface);
+    }
 
     private void updateBatteryData(Intent intent) {
         int health = intent.getIntExtra(BatteryManager.EXTRA_HEALTH, 0);
@@ -32,7 +37,7 @@ public class BatteryPresenter {
         int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
         int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
         boolean isError = level == -1 || scale == -1 || scale == 0;
-        mBatteryInfoInterface.setBatteryPercent(isError ? null : level /(double) scale);
+        mBatteryInfoInterface.setBatteryPercent(isError ? null : level / (double) scale);
 
         int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0);
         mBatteryInfoInterface.setPluggedInStatus(plugged);
@@ -44,17 +49,11 @@ public class BatteryPresenter {
         isError = technology == null || "".equals(technology);
         mBatteryInfoInterface.setBatteryTechnology(isError ? null : technology);
 
-        double temperature = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0)/10f;
+        double temperature = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0) / 10f;
         mBatteryInfoInterface.setTemperature(temperature > 0 ? temperature : null);
 
-        double voltage = ((double) intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 0))/1000;
+        double voltage = ((double) intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 0)) / 1000;
         mBatteryInfoInterface.setVoltage(voltage > 0 ? voltage : null);
-    }
-
-    public BatteryPresenter(Context ctx, BatteryInfoInterface batteryInfoInterface) {
-        mBatteryInfoInterface = batteryInfoInterface;
-        mCtx = ctx;
-        mCurrentTracker = new CurrentTracker(ctx, batteryInfoInterface);
     }
 
     public void resetCurrentHistory() {

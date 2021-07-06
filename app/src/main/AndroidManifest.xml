@@ -7,12 +7,12 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:fullBackupContent="@xml/backup_descriptor">
+        android:theme="@style/AppTheme">
         <activity
             android:name="com.communitycode.amps.main.MainActivity"
             android:label="@string/app_name"
@@ -27,11 +27,11 @@
 
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.communitycode.amps.main.settings.SettingsActivity"
             android:label="@string/action_settings"
-            android:theme="@style/AppTheme"
-            android:parentActivityName="com.communitycode.amps.main.MainActivity">
-        </activity>
+            android:parentActivityName="com.communitycode.amps.main.MainActivity"
+            android:theme="@style/AppTheme" />
     </application>
 </manifest>

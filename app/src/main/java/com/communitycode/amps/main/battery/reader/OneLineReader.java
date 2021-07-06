@@ -17,10 +17,9 @@
  *  along with CurrentWidget.  If not, see <http://www.gnu.org/licenses/>.
  *
  *  Modified 23 March 2018
-*/
+ */
 
 package com.communitycode.amps.main.battery.reader;
-
 
 import android.util.Log;
 
@@ -29,9 +28,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
-
 public class OneLineReader {
-
 
     public static Integer getValue(File _f) {
 
@@ -50,9 +47,7 @@ public class OneLineReader {
         } catch (Exception ex) {
             // Expected to fail frequently due to permissions
             Log.d("Amps", ex.getMessage(), ex);
-        }
-        finally
-        {
+        } finally {
             try {
                 if (fs != null) {
                     fs.close();
@@ -63,9 +58,7 @@ public class OneLineReader {
                 if (br != null) {
                     br.close();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Log.e("Amps", ex.getMessage(), ex);
             }
         }

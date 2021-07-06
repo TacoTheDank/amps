@@ -1,6 +1,5 @@
 package com.communitycode.amps.main.battery;
 
-
 import com.communitycode.amps.main.battery.reader.BatteryAttrTextReader;
 import com.communitycode.amps.main.battery.reader.OneLineReader;
 import com.communitycode.amps.main.battery.reader.SMemTextReader;
@@ -63,8 +62,7 @@ public class UnofficialBatteryMethod implements BatteryMethodInterface {
 
         if (val == null) {
             return null;
-        }
-        else {
+        } else {
             return Math.round(val * scale);
         }
     }
