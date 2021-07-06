@@ -1,11 +1,12 @@
 package com.communitycode.amps.main;
 
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +30,7 @@ public class UtilsInstrumentedTest {
 
     @Test
     public void flattenViewGroup_singleElement() throws Exception {
-        Context appContext = InstrumentationRegistry.getTargetContext();
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         ViewGroup viewGroup = new LinearLayout(appContext);
         View A = new View(appContext);
         viewGroup.addView(A);
@@ -41,7 +42,7 @@ public class UtilsInstrumentedTest {
 
     @Test
     public void flattenViewGroup_multipleElements() throws Exception {
-        Context appContext = InstrumentationRegistry.getTargetContext();
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         ViewGroup viewGroup = new LinearLayout(appContext);
         View A = new View(appContext);
         View B = new View(appContext);
@@ -55,7 +56,7 @@ public class UtilsInstrumentedTest {
 
     @Test
     public void flattenViewGroup_nestedElements() throws Exception {
-        Context appContext = InstrumentationRegistry.getTargetContext();
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         ViewGroup viewGroup = new LinearLayout(appContext);
         View A = new View(appContext);
         View B = new View(appContext);
