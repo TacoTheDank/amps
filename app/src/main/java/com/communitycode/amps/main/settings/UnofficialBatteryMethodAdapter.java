@@ -51,7 +51,7 @@ public class UnofficialBatteryMethodAdapter extends RecyclerView.Adapter<Unoffic
 
         View.OnClickListener onClickListener = v -> {
             if (mOnClickListener != null) {
-                mOnClickListener.onClick(holder.getAdapterPosition());
+                mOnClickListener.onClick(holder.getBindingAdapterPosition());
             }
         };
 

@@ -1,16 +1,19 @@
 package com.communitycode.amps.main.settings;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.preference.DialogPreference;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.preference.DialogPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceDialogFragmentCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -180,60 +183,6 @@ public class UnofficialBatteryApiPreference extends DialogPreference {
     }
 
     @Override
-    protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
-        super.onPrepareDialogBuilder(builder);
-
-        if (mEntries == null || mEntryValues == null) {
-            throw new IllegalStateException(
-                    "ListPreference requires an entries array and an entryValues array.");
-        }
-
-        Context context = builder.getContext();
-        RecyclerView mRecyclerView = new RecyclerView(context);
-
-        // use a linear layout manager
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        // specify an adapter (see also next example)
-        mClickedDialogEntryIndex = getValueIndex();
-        final UnofficialBatteryMethodAdapter mAdapter = new UnofficialBatteryMethodAdapter(mEntries, mClickedDialogEntryIndex);
-        mAdapter.setOnClickListener(position -> {
-            UnofficialBatteryApiPreference that = UnofficialBatteryApiPreference.this;
-
-            mAdapter.setCheckedPosition(position);
-            that.mClickedDialogEntryIndex = that.mClickedDialogEntryIndex == position ? -1 : position;
-
-            Dialog dialog = that.getDialog();
-            that.onClick(dialog, DialogInterface.BUTTON_POSITIVE);
-            dialog.dismiss();
-        });
-
-        mRecyclerView.setAdapter(mAdapter);
-        builder.setView(mRecyclerView);
-
-        builder.setPositiveButton(null, null);
-    }
-
-    @Override
-    protected void onDialogClosed(boolean positiveResult) {
-        super.onDialogClosed(positiveResult);
-
-        if (positiveResult && mClickedDialogEntryIndex >= 0 && mEntryValues != null) {
-            String value = mEntryValues.get(mClickedDialogEntryIndex);
-            if (callChangeListener(value)) {
-                setValue(value);
-            }
-        }
-        // Same item was clicked. Deselect item
-        if (positiveResult && mClickedDialogEntryIndex == -1) {
-            if (callChangeListener(null)) {
-                setValue(null);
-            }
-        }
-    }
-
-    @Override
     protected Object onGetDefaultValue(TypedArray a, int index) {
         return a.getString(index);
     }
@@ -295,6 +244,69 @@ public class UnofficialBatteryApiPreference extends DialogPreference {
         public void writeToParcel(Parcel dest, int flags) {
             super.writeToParcel(dest, flags);
             dest.writeString(value);
+        }
+    }
+
+    public class DialogFrag extends PreferenceDialogFragmentCompat {
+
+        public static DialogFrag newInstance(Preference preference) {
+            DialogFrag fragment = new DialogFrag();
+            Bundle bundle = new Bundle(1);
+            bundle.putString("key", preference.getKey());
+            fragment.setArguments(bundle);
+            return fragment;
+        }
+
+        @Override
+        protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
+            super.onPrepareDialogBuilder(builder);
+
+            if (mEntries == null || mEntryValues == null) {
+                throw new IllegalStateException(
+                        "ListPreference requires an entries array and an entryValues array.");
+            }
+
+            Context context = builder.getContext();
+            RecyclerView mRecyclerView = new RecyclerView(context);
+
+            // use a linear layout manager
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
+            mRecyclerView.setLayoutManager(mLayoutManager);
+
+            // specify an adapter (see also next example)
+            mClickedDialogEntryIndex = getValueIndex();
+            final UnofficialBatteryMethodAdapter mAdapter = new UnofficialBatteryMethodAdapter(mEntries, mClickedDialogEntryIndex);
+            mAdapter.setOnClickListener(position -> {
+                UnofficialBatteryApiPreference that = UnofficialBatteryApiPreference.this;
+
+                mAdapter.setCheckedPosition(position);
+                that.mClickedDialogEntryIndex = that.mClickedDialogEntryIndex == position ? -1 : position;
+
+                Dialog dialog = getDialog();
+                that.onClick(dialog, DialogInterface.BUTTON_POSITIVE);
+                dialog.dismiss();
+            });
+
+            mRecyclerView.setAdapter(mAdapter);
+            builder.setView(mRecyclerView);
+
+            builder.setPositiveButton(null, null);
+        }
+
+        @Override
+        public void onDialogClosed(boolean positiveResult) {
+            if (positiveResult && mClickedDialogEntryIndex >= 0 && mEntryValues != null) {
+                String value = mEntryValues.get(mClickedDialogEntryIndex);
+                if (callChangeListener(value)) {
+                    setValue(value);
+                }
+            }
+            // Same item was clicked. Deselect item
+            if (positiveResult && mClickedDialogEntryIndex == -1) {
+                if (callChangeListener(null)) {
+                    setValue(null);
+                }
+            }
         }
     }
 }
